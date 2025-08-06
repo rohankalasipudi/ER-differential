@@ -13,7 +13,7 @@ from er_symptoms import ER_PRESENTATIONS
 # import er_treatments 
 #
 # or simply remove the import and the section that uses it.
-from er_treatments import ER_TREATMENTS
+#from er_treatments import ER_TREATMENTS
 
 def initialize_session_state():
     """Initializes session state variables if they don't exist."""
