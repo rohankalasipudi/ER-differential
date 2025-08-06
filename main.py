@@ -3,17 +3,7 @@
 
 import streamlit as st
 from er_symptoms import ER_PRESENTATIONS
-# The file er_treatments.py is assumed to be in the same directory.
-# If you don't have it, you can create a placeholder file to prevent errors.
-# For example:
-#
-# # er_treatments.py
-# ER_TREATMENTS = {}
-#
-# import er_treatments 
-#
-# or simply remove the import and the section that uses it.
-#from er_treatments import ER_TREATMENTS
+# The er_treatments.py file is no longer needed since treatments are not displayed.
 
 def initialize_session_state():
     """Initializes session state variables if they don't exist."""
@@ -29,7 +19,7 @@ def initialize_session_state():
 def reset_app():
     """Resets the application to the initial state."""
     st.session_state.step = "start"
-    st.st.session_state.chief_complaint = None
+    st.session_state.chief_complaint = None
     st.session_state.answers = {}
     st.session_state.diagnosis = None
 
@@ -88,7 +78,7 @@ def main():
                 if st.button(complaint, use_container_width=True, key=f"btn_{i}"):
                     st.session_state.chief_complaint = complaint
                     st.session_state.step = "questions"
-                    st.experimental_rerun()
+                    st.rerun()
 
     elif st.session_state.step == "questions":
         presentation = st.session_state.chief_complaint
@@ -114,12 +104,12 @@ def main():
                 with cols[i]:
                     if st.button(option, key=f"{question_key}_{option}"):
                         st.session_state.answers[question_key] = option
-                        st.experimental_rerun()
+                        st.rerun()
         else:
             # All questions have been answered, now find the diagnosis
             st.session_state.diagnosis = match_diagnosis(presentation, st.session_state.answers)
             st.session_state.step = "results"
-            st.experimental_rerun()
+            st.rerun()
 
     elif st.session_state.step == "results":
         st.subheader("Your Analysis")
@@ -134,22 +124,6 @@ def main():
         if diagnosis:
             st.success(f"**Most Probable Diagnosis:** {diagnosis['name']}")
             st.info(f"**Differentiating Factors:** {diagnosis['differentiating_factors']}")
-            
-            # This part assumes er_treatments.py exists
-            try:
-                if diagnosis['name'] in ER_TREATMENTS:
-                    treatment_data = ER_TREATMENTS[diagnosis['name']]
-                    st.markdown("#### **Initial Management (ER)**")
-                    st.markdown("**First-Line Therapy:**")
-                    for item in treatment_data['first_line']:
-                        st.markdown(f"- {item}")
-                    st.markdown("**Supportive Care:**")
-                    for item in treatment_data['supportive_care']:
-                        st.markdown(f"- {item}")
-                else:
-                    st.warning("Treatment protocol not found for this diagnosis.")
-            except NameError:
-                st.warning("Could not find `er_treatments.py`. Please make sure the file exists and is in the same directory.")
         else:
             st.warning("Could not match a specific diagnosis with these findings.")
         
