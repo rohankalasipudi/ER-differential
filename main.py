@@ -2,7 +2,7 @@
 # This is a Streamlit application for a progressive, ER-focused diagnostic tool.
 
 import streamlit as st
-from er_symptoms import ER_PRESENTATIONS
+from er_symptomsmore import ER_PRESENTATIONS
 # The er_treatments.py file is no longer needed since treatments are not displayed.
 
 def initialize_session_state():
